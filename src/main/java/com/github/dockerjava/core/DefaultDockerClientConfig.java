@@ -238,7 +238,11 @@ public class DefaultDockerClientConfig implements Serializable, DockerClientConf
     public DockerConfigFile getDockerConfig() {
         if (dockerConfig == null) {
             try {
-                dockerConfig = DockerConfigFile.loadConfig(new File(getDockerConfigPath()));
+                if (getDockerConfigPath() != null) {
+                    dockerConfig = DockerConfigFile.loadConfig(new File(getDockerConfigPath()));
+                } else {
+                    dockerConfig = new DockerConfigFile();
+                }
             } catch (IOException e) {
                 throw new DockerClientException("Failed to parse docker configuration file", e);
             }
